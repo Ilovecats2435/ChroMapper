@@ -69,11 +69,14 @@ public static class SimpleEditorUtils
         var outputDirectory = Path.GetFullPath(Path.Combine("build", "Linux64"));
         Directory.CreateDirectory(outputDirectory);
         var outputPath = Path.Combine(outputDirectory, "ChroMapper");
-        var report = BuildPipeline.BuildPlayer(
-            GetEnabledScenes(),
-            outputPath,
-            BuildTarget.StandaloneLinux64,
-            buildOptions);
+        var options = new BuildPlayerOptions
+        {
+            scenes = GetEnabledScenes(),
+            locationPathName = outputPath,
+            target = BuildTarget.StandaloneLinux64,
+            options = buildOptions
+        };
+        var report = BuildPipeline.BuildPlayer(options);
 
         if (report.summary.result != BuildResult.Succeeded)
             throw new BuildFailedException($"Linux test build failed: {report.summary.result}");
