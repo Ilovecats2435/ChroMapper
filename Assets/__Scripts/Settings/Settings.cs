@@ -150,6 +150,7 @@ public class Settings
     public bool BloomFog = true;
     public bool ChromaticAberration = true;
     public bool ScreenDisplacement = true;
+    public bool DisableSDF;
     public float CameraFOV = 60f;
     public float PlayerCameraFOV = 60f;
     public float PlayerCameraOffsetZ = 3.6f; // 3.6m => 6 Z

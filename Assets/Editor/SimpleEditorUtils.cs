@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 
 [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
     Justification = "These methods are used by Jenkins to automatically build ChroMapper.")]
@@ -57,6 +59,24 @@ public static class SimpleEditorUtils
         SetBuildNumber();
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, buildOptions);
+    }
+
+    public static void BuildLinuxForTesting()
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        SetBuildNumber();
+
+        var outputDirectory = Path.GetFullPath(Path.Combine("build", "Linux64"));
+        Directory.CreateDirectory(outputDirectory);
+        var outputPath = Path.Combine(outputDirectory, "ChroMapper");
+        var report = BuildPipeline.BuildPlayer(
+            GetEnabledScenes(),
+            outputPath,
+            BuildTarget.StandaloneLinux64,
+            buildOptions);
+
+        if (report.summary.result != BuildResult.Succeeded)
+            throw new BuildFailedException($"Linux test build failed: {report.summary.result}");
     }
 
     [InitializeOnLoadMethod]

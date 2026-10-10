@@ -752,6 +752,7 @@
             float3 _IridescenceAxesMultiplier;
             // _EMISSION_TEXTURE_SOURCE_SDF
             float4 _SDFPointArray[3];
+            float _SDFEmissionEnabled;
             float3 _SDFNoisePanning;
             float3 _SDFNoiseOffset;
             float _SDFPointIntensity;
@@ -2370,6 +2371,8 @@
                 emissionInput = composableSurface.mpm.gg;
                 #elif defined(_EMISSION_TEXTURE_SOURCE_SDF)
                 {
+                    if (_SDFEmissionEnabled > 0.5)
+                    {
                     float sdfMask = 1.0;
                     float sdfAccumulator = 0.0;
                     for (int pointIndex = 0; pointIndex < 3; pointIndex++)
@@ -2409,6 +2412,7 @@
                         tex3D(_SDFNoiseTex, noiseUv).r *
                         UNITY_ACCESS_INSTANCED_PROP(Props, _SDFNoiseIntensity);
                     emissionInput = sdfEmission.xx;
+                    }
                 }
                 #elif defined(_EMISSIONTEXTURE_PULSE)
                 { 

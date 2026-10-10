@@ -10,9 +10,11 @@ public class SDFArrayManager : MonoBehaviour
     private bool isInitialized;
 
     private static readonly int sdfPointsArray = Shader.PropertyToID("_SDFPointArray");
+    private static readonly int sdfEmissionEnabled = Shader.PropertyToID("_SDFEmissionEnabled");
 
     protected void Awake()
     {
+        UpdateSdfEmissionEnabled();
         if (SDFPointArray is { Length: > 0 }) SetSdfPoints(SDFPointArray);
     }
 
@@ -30,7 +32,8 @@ public class SDFArrayManager : MonoBehaviour
 
     protected void Update()
     {
-        if (!isInitialized) return;
+        UpdateSdfEmissionEnabled();
+        if (!isInitialized || Settings.Instance.DisableSDF) return;
         for (var i = 0; i < 3; i++)
         {
             var position = SDFPointArray[i].transform.position;
@@ -39,4 +42,7 @@ public class SDFArrayManager : MonoBehaviour
 
         Shader.SetGlobalVectorArray(sdfPointsArray, sdfArrayValues);
     }
+
+    private static void UpdateSdfEmissionEnabled() =>
+        Shader.SetGlobalFloat(sdfEmissionEnabled, Settings.Instance.DisableSDF ? 0f : 1f);
 }

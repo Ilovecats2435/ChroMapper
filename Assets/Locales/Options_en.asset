@@ -1602,6 +1602,14 @@ MonoBehaviour:
     m_Localized: Screen Displacement
     m_Metadata:
       m_Items: []
+  - m_Id: 900000000000000011
+    m_Localized: Disable SDF Emission
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900000000000000012
+    m_Localized: Temporarily bypass SDF-based environment emission for troubleshooting.
+    m_Metadata:
+      m_Items: []
   - m_Id: 664292683443568642
     m_Localized: Enables or disables obstacle screen displacement.
     m_Metadata:
